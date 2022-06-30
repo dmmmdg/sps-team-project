@@ -26,3 +26,26 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+async function loadPosts() {
+    
+    // Get response from display-posts server 
+    const responseFromServer = await fetch('/display-posts');
+    const jsonFromResponse = await responseFromServer.json();
+    console.log(jsonFromResponse);
+
+    // Create the html container for the posts
+    const displayPostsContainer = document.getElementById('display-posts-container');
+
+    // Loop through all posts in the server response and create a div for each one
+    jsonFromResponse.forEach(postContent => {
+        displayPostsContainer.appendChild(createPostElement(postContent));
+    });
+}
+
+// Takes in a string and returns a div element containing the string
+function createPostElement(post) {
+    const postElement = document.createElement('div');
+    postElement.innerText = post;
+    return postElement;
+}
