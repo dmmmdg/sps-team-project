@@ -2,19 +2,46 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Project</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
   <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <div><a href="login.html">Log In</a></div>
-      <p>This is my portfolio.</p>
-      <p>Click <a href="/hello">here</a> to see content created by server code.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <div id="login">
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+        <script>
+          function handleCredentialResponse(response) {
+              const data = jwt_decode(response.credential)
+              console.log(data)
+              fullName.textContent = data.name
+              sub.textContent = data.sub
+              given_name.textContent = data.given_name
+              family_name.textContent = data.family_name
+              email.textContent = data.email
+              verifiedEmail.textContent = data.email_verified
+              picture.setAttribute("src", data.picture)
+          }
+          window.onload = function () {
+            google.accounts.id.initialize({
+              client_id: "ID",
+              callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+              document.getElementById("buttonDiv"),
+              { theme: "outline", size: "large" }  // customization attributes
+            );
+            google.accounts.id.prompt(); // also display the One Tap dialog
+          }
+      </script>
+      <div id="buttonDiv"></div> 
+      <p id="fullName"></p>
+      <p id="sub"></p>
+      <p id="given_name"></p>
+      <p id="family_name"></p>
+      <p id="email"></p>
+      <p id="verifiedEmail"></p>
+      <img id="picture" />
     </div>
   </body>
 </html>
