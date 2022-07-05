@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oohca!</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body onload="autoLogin()">
+    <div class="mainWrapper">
+        <div class="welcomeWrapper">
+            <h1>Login</h1>
+        </div>
+        <div class="signWrapper">
+
+                    <div class="signInputWrapper">
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button value="Sign Up" class="signButton" style="margin:0px;width:100%" onclick="goToMainPage()">Sign Up!</button>
+        </div>
+        <script>
+            const parseCookie = str =>
+                str
+                .split(';')
+                .map(v => v.split('='))
+                .reduce((acc, v) => {
+                    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+                    return acc;
+                }, {});
+
+            function autoLogin() {
+                fetch('/mainpage', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': document.cookie
+                    }
+                })
+                .then((res)=>{
+                    if(res.status == 200){
+                        user_name=parseCookie(document.cookie).user_name
+                        window.location.href = '/mainpage'+'?username='+user_name;
+                    }
+                })
+            }
+
+
+
+             function goToMainPage() {
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value
+                    })
+                }).then(response=>{
+                    window.location.href = '/mainpage'+'?username='+document.Cookie.user_name;
+                }).catch(error=>{
+                    alert("Error creating user!");
+                });
+                
+            }
+
+        </script>
+    
+</body>
+</html>
