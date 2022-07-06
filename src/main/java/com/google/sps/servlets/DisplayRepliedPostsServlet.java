@@ -1,5 +1,3 @@
-//need add verification of owner
-
 package com.google.sps.servlets;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
@@ -20,15 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet responsible for displaying posts. */
-@WebServlet("/display-posts-unreplied")
-public class DisplayUnrepliedPostsServlet extends HttpServlet {
+@WebServlet("/display-posts")
+public class DisplayRepliedPostsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // Initialize Datastore 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Post").build();
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("RepliedPost").build();
         QueryResults<Entity> results = datastore.run(query);
 
         // Add the post content string into the 'posts' arraylist 
@@ -36,11 +34,11 @@ public class DisplayUnrepliedPostsServlet extends HttpServlet {
         while (results.hasNext()) {
             List<String> onePost = new ArrayList<>(); 
             Entity entity = results.next();
-            String postContent = entity.getString("content");
-            String ownerId = entity.getString("user_id");
+            String postContent = entity.getString("originalcontent");
+            String repliedContent = entity.getString("content");
             String postId = ""+entity.getKey().getId()+"";
             onePost.add(postContent);
-            onePost.add(ownerId);
+            onePost.add(repliedContent);
             onePost.add(postId);
             posts.add(onePost);
         }

@@ -33,7 +33,7 @@ public class HandleReplyServlet extends HttpServlet {
     long timestamp = System.currentTimeMillis();
 
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-    KeyFactory keyFactory = datastore.newKeyFactory().setKind("repliedPost");
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("RepliedPost");
      FullEntity repliedEntity =
         Entity.newBuilder(keyFactory.newKey())
             .set("ownerId", ownerId)
@@ -42,5 +42,11 @@ public class HandleReplyServlet extends HttpServlet {
             .set("timestamp",timestamp )
             .build();
     datastore.put(repliedEntity);
+
+
+    KeyFactory keyFactoryDelete = datastore.newKeyFactory().setKind("Post");
+    Key unRepliedKey = keyFactoryDelete.newKey(Long.valueOf(postId).longValue());
+    datastore.delete(unRepliedKey);
+
     }
 }
