@@ -2,18 +2,22 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Project</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
   </head>
   <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click <a href="/hello">here</a> to see content created by server code.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <div id="login">
+      <div id="buttonDiv"></div> 
+      <p id="fullName"></p>
+      <p id="sub"></p>
+      <p id="given_name"></p>
+      <p id="family_name"></p>
+      <p id="email"></p>
+      <p id="verifiedEmail"></p>
+      <img id="picture" />
     </div>
   </body>
 </html>
