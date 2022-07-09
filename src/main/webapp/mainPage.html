@@ -47,7 +47,7 @@
     }
 </style>
 <body onload="getPosts()">
-    <form action="http://summer22-sps-39.wl.r.appspot.com/new-post" method="post">
+    <form action="/new-post" method="post">
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
         <input type="submit" value="submit">
@@ -67,21 +67,11 @@
     //get id parameter from url
     async function getPosts()
     {
-        
-        console.log(document.cookie);
-        console.log("getPosts()");
-        //get cookie
-        var cookie = document.cookie;
-        //get id from cokie
-        var matchId = document.cookie.match(new RegExp('(^| )' + "user_id" + '=([^;]+)'));
-        if(matchId!=null){
-            var user_id = matchId[2];
-        }
-        var matchPassword = document.cookie.match(new RegExp('(^| )' + "password" + '=([^;]+)'));
-        if(matchPassword!=null){
-            var password = matchPassword[2];
-        }
-        var url = window.location.href;
+
+        //I deleted cookie login here, and it should be replaced by something that could get Google ID. 
+        var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
+
+
         var owner_id = url.substring(url.indexOf("?") + 1);
         owner_id=owner_id.split("=")[1];
         document.getElementById("owner_id").value = owner_id;
@@ -89,7 +79,7 @@
         console.log (owner_id);
         //need to add backend verification
         if (owner_id===user_id && user_id!=null && password!=null) {
-            var unRepliedResults = await fetch("http://summer22-sps-39.wl.r.appspot.com/display-posts-unreplied", {
+            var unRepliedResults = await fetch("/display-posts-unreplied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -111,7 +101,7 @@
                 
                 //create response form
                 var responseForm = document.createElement("form");
-                responseForm.action = "http://summer22-sps-39.wl.r.appspot.com/reply-post";
+                responseForm.action = "/reply-post";
                 responseForm.method = "post";
                 var responseInput = document.createElement("input");
                 responseInput.name = "content";
@@ -151,7 +141,7 @@
 
         }
         if(owner_id){
-            var repliedResults = await fetch("http://summer22-sps-39.wl.r.appspot.com/display-posts", {
+            var repliedResults = await fetch("/display-posts-replied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

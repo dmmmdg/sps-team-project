@@ -8,7 +8,6 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Key;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,13 +48,6 @@ public class SignUpPageServlet extends HttpServlet {
                 .set("password",password)
                 .build();
         datastore.put(newUser);
-        Cookie user_name = new Cookie("user_name", username);
-        Cookie passwordCookie = new Cookie("password", password);
-        Cookie user_id = new Cookie("user_id",id.getId()+"");
-        response.addCookie(user_name);
-        response.addCookie(passwordCookie);
-        response.addCookie(user_id);
-    
         response.sendRedirect("/mainPage.html?id="+java.net.URLEncoder.encode(""+id.getId()+"", "UTF-8"));
 
         

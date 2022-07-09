@@ -37,17 +37,5 @@ public class NewPostServlet extends HttpServlet {
             .set("timestamp",timestamp )
             .build();
     datastore.put(taskEntity);
-    // response.sendRedirect("/index.html");
-
-
-    
-    // response.setContentType("text/html;");
-    // // Write the value to the response so the user can see it.
-    
-    // response.getWriter().println("<h1>Thanks for contacting me!</h1>");
-    // response.getWriter().println("<h3>Your Name: " + name + "</h3>");
-    // response.getWriter().println("<h3>Your email: " + email + "</h3>");
-    // response.getWriter().println("<h3>Your message: " + message + "</h3>");
-    // response.getWriter().println("<button onclick='window.location.href=`https://cwang-sps-summer22.wl.r.appspot.com/`;setTimeout(() => window.location.reload(), 250);'>Go Back</button>");
   }
 }

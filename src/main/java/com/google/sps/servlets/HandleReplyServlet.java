@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-/** Servlet responsible for displaying posts. */
+/** Servlet responsible for replying posts. */
 @WebServlet("/reply-post")
 public class HandleReplyServlet extends HttpServlet {
     @Override

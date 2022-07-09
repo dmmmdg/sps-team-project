@@ -14,13 +14,17 @@
             <h1>Welcome to SPS Team39's Project!</h1>
         </div>
         <div class="signButtonWrapper">
-            <button class="signButton" onclick="goToSignUp()">Sign up</button> 
-            <button class="signButton" onclick="goToLogin()">Log in</button>
+            <button class="signButton" onclick="goToSignUp()">Login with Google</button> 
         </div>
 
     </div>
 
-    <script src="index.js"></script>
+    <script>
+        function goToSignUp() {
+            window.location.href = "/signup";
+        }
+
+    </script>
     
 </body>
 </html>
