@@ -46,7 +46,7 @@
         margin-top: 20px;
     }
 </style>
-<body onload="getPosts()">
+<body onload="loadData()">
     <form action="/new-post" method="post">
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
@@ -64,28 +64,15 @@
     </div>
 
 <script>
-    //get id parameter from url
-    async function getPosts()
-    {
-
-        //I deleted cookie login here, and it should be replaced by something that could get Google ID. 
-        var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
-
-
-        var owner_id = url.substring(url.indexOf("?") + 1);
-        owner_id=owner_id.split("=")[1];
-        document.getElementById("owner_id").value = owner_id;
-        console.log (user_id);
-        console.log (owner_id);
-        //need to add backend verification
-        if (owner_id===user_id && user_id!=null && password!=null) {
-            var unRepliedResults = await fetch("/display-posts-unreplied", {
+    async function getUnrepliedPost(){
+        var unRepliedResults = await fetch("/display-posts-unreplied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "owner_id": owner_id,
-                    "user_id":user_id,
-                    "password":password
+                    //TODO: replace the verification by Google's API
+                    // "owner_id": owner_id,
+                    // "user_id":user_id,
+                    // "password":password
                 },
             })
             var unRepliedResultsJson = await unRepliedResults.json();
@@ -136,12 +123,11 @@
                 responseForm.appendChild(responseSubmit);
                 unRepliedDiv.appendChild(responseForm);
                 unRepliedWrapper.appendChild(unRepliedDiv);
-
             }
+    }
 
-        }
-        if(owner_id){
-            var repliedResults = await fetch("/display-posts-replied", {
+    async function getRepliedPost(owner_id){
+        var repliedResults = await fetch("/display-posts-replied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -168,6 +154,31 @@
                 repliedWrapper.appendChild(repliedDiv);
         }
     }
+
+    async function loadData()
+    {
+
+        //I deleted cookie login here, and it should be replaced by something that could get Google ID. 
+        //TODO: provide a valid user id from Google's API
+        var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
+
+
+        var owner_id = url.substring(url.indexOf("?") + 1);
+        owner_id=owner_id.split("=")[1];
+        document.getElementById("owner_id").value = owner_id;
+        console.log (user_id);
+        console.log (owner_id);
+
+        //TODO: if the user has a valid id, then send to the server (prevent bad behavior)
+        if (1) {
+            getUnrepliedPost();
+        }
+
+        //if the url has a valid id, then send to the server (prevent bad behavior)
+        if(owner_id){
+            getRepliedPost(owner_id);
+    }
+
 }
 
     
