@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Project</title>
     <link rel="stylesheet" href="style.css">
@@ -10,14 +12,38 @@
   </head>
   <body>
     <div id="login">
-      <div id="buttonDiv"></div> 
-      <p id="fullName"></p>
-      <p id="sub"></p>
-      <p id="given_name"></p>
-      <p id="family_name"></p>
-      <p id="email"></p>
-      <p id="verifiedEmail"></p>
-      <img id="picture" />
-    </div>
+        <div id="buttonDiv"></div> 
+        <p id="fullName"></p>
+        <p id="sub"></p>
+        <p id="given_name"></p>
+        <p id="family_name"></p>
+        <p id="email"></p>
+        <p id="verifiedEmail"></p>
+        <img id="picture" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>SPS Team39</title>
+      <link rel="stylesheet" href="style/style.css">
+  
+  </head>
+  <body>
+      <div class="mainWrapper">
+          <div class="welcomeWrapper">
+              <h1>Welcome to SPS Team39's Project!</h1>
+          </div>
+          <div class="signButtonWrapper">
+              <button class="signButton" onclick="goToSignUp()">Login with Google</button> 
+          </div>
+  
+      </div>
+    </body>
+  
+      <script>
+          function goToSignUp() {
+              window.location.href = "/signup";
+          }
+  
+      </script>
+  
   </body>
-</html>
+  </html> 
