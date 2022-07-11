@@ -1,4 +1,4 @@
-/** we should unify the display unreplied post endpoint*/
+//TODO: unify the display unreplied post endpoint
 
 package com.google.sps.servlets;
 import com.google.cloud.datastore.Datastore;
