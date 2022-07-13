@@ -161,8 +161,7 @@
         //I deleted cookie login here, and it should be replaced by something that could get Google ID. 
         //TODO: provide a valid user id from Google's API
         var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
-
-
+        var url = window.location.href;
         var owner_id = url.substring(url.indexOf("?") + 1);
         owner_id=owner_id.split("=")[1];
         document.getElementById("owner_id").value = owner_id;
