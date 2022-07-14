@@ -85,14 +85,6 @@
         var unRepliedWrapper = document.getElementById("unRepliedWrapper");
         unRepliedWrapper.innerHTML = "";
 
-        // var currentPage = 1;
-        // var numPostsOnEachPage = 3;
-        // var numPages = Math.ceil(unRepliedResultsJson.length / numPostsOnEachPage);
-        // var startPostIndex = (currentPage - 1) * numPostsOnEachPage;
-        // var endPostIndex = startPostIndex + numPostsOnEachPage;
-        // if (endPostIndex > unRepliedResultsJson.length) {
-        //     endPostIndex = unRepliedResultsJson.length;
-        // }
 
         $('#unRepliedWrapperPagination').pagination({
             dataSource: unRepliedResultsJson,
@@ -150,64 +142,6 @@
                 $("#unRepliedWrapper").html(dataHtml);
             }
         })
-
-        // for (var i = 0; i < unRepliedResultsJson.length; i++) {
-        //     var unRepliedDiv = document.createElement("div");
-        //     unRepliedDiv.className = "unRepliedDiv";
-        //     var message = document.createElement("ul");
-        //     message.innerHTML = unRepliedResultsJson[i][0];
-        //     message.className = "message";
-            
-        //     //create response form
-        //     var responseForm = document.createElement("form");
-        //     responseForm.action = "/reply-post";
-        //     responseForm.method = "post";
-        //     var responseInput = document.createElement("input");
-        //     responseInput.name = "content";
-        //     responseInput.type = "text";
-        //     responseInput.placeholder = "reply";
-            
-        //     var responseOwnerId = document.createElement("input");
-        //     responseOwnerId.name = "ownerId";
-        //     responseOwnerId.type = "hidden";
-        //     responseOwnerId.value = unRepliedResultsJson[i][1];
-
-        //     var responsePostId = document.createElement("input");
-        //     responsePostId.name = "postId";
-        //     responsePostId.type = "hidden";
-        //     responsePostId.value = unRepliedResultsJson[i][2];
-
-        //     var originalContent = document.createElement("input");
-        //     originalContent.name = "originalContent";
-        //     originalContent.type = "hidden";
-        //     originalContent.value = unRepliedResultsJson[i][0];
-
-        //     var responseSubmit = document.createElement("input");
-        //     responseSubmit.type = "submit";
-        //     responseSubmit.value = "Submit";
-
-
-        //     responseForm.appendChild(message);
-        //     responseForm.appendChild(responseInput);
-        //     responseForm.appendChild(responseOwnerId);
-        //     responseForm.appendChild(responsePostId);
-        //     responseForm.appendChild(originalContent);
-        //     responseForm.appendChild(responseSubmit);
-        //     unRepliedDiv.appendChild(responseForm);
-        //     unRepliedWrapper.appendChild(unRepliedDiv);
-        // }
-
-        // var nextBtn = document.createElement("BUTTON");
-        // nextBtn.innerHTML = ">";
-        // nextBtn.onclick = function() {nextPage()}
-        // unRepliedWrapper.appendChild(nextBtn);
-
-        // function nextPage() {
-        //     if (currentPage < numPages) {
-        //         currentPage++;
-        //         console.log(currentPage)
-        //     }
-        // }
     }
 
     async function getRepliedPost(owner_id){
