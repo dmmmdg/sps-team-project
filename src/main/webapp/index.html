@@ -3,6 +3,7 @@
   <head>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <title>Project</title>
     <link rel="stylesheet" href="style.css">
@@ -19,6 +20,22 @@
           <div class="welcomeWrapper">
               <h1>Welcome to SPS Team39's Project!</h1>
           </div>
+                <!-- <div id="g_id_onload"
+            data-client_id="891385536925-sblb9nv3ehfc45p806jkkarnvjivb9he.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="popup"
+            data-login_uri="https://summer22-sps-39.wl.r.appspot.com/signup"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin"
+            data-type="standard"
+            data-shape="rectangular"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="large"
+            data-logo_alignment="left">
+        </div> -->
           <div class="signButtonWrapper">
             <div id="login">
                 <div id="buttonDiv"></div> 
@@ -53,23 +70,39 @@
 /**
   * Adds the sign in with Google function.
  */
-function handleCredentialResponse(response) {
+async function handleCredentialResponse(response) {
     const data = jwt_decode(response.credential)
     console.log(data)
-
-    fetch('/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: "ID="+data.sub+"&email="+data.email+"&name="+data.name
-    }).catch(error=>{
+    var token;
+    var statusCode = 404;
+    const res = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: "ID="+data.sub+"&email="+data.email+"&name="+data.name
+        }).catch(error=>{
         console.log("Error creating user!");
-    });
+        }).then((res)=>{
+            console.log(document.cookie)
+            
+            let matchToken = document.cookie.match(new RegExp('(^| )' + "token" + '=([^;]+)'));
+            if(matchToken!=null){
+                token = matchToken[2];
+            }
+            statusCode = res.status;
+            if(statusCode == 200){
+                window.location.href="mainPage.html?id="+token;
+            }
+        })
+    
+
+
+    
   }
 window.onload = function () {
     google.accounts.id.initialize({
-        client_id: "ID",
+        client_id: "891385536925-sblb9nv3ehfc45p806jkkarnvjivb9he.apps.googleusercontent.com",
         callback: handleCredentialResponse
     });
     google.accounts.id.renderButton(

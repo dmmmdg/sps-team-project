@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
@@ -65,14 +66,22 @@
 
 <script>
     async function getUnrepliedPost(){
-        var unRepliedResults = await fetch("/display-posts-unreplied", {
+        var token;
+        let matchToken = document.cookie.match(new RegExp('(^| )' + "token" + '=([^;]+)'));
+        if(matchToken!=null){
+            token = atob(matchToken[2]);
+        }
+        var url_string = window.location.href; 
+        var url = new URL(url_string);
+        var id = atob(url.searchParams.get("id"));
+        console.log(id);
+
+        var unRepliedResults = await fetch(("/display-posts-unreplied"), {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                //TODO: replace the verification by Google's API
-                // "owner_id": owner_id,
-                // "user_id":user_id,
-                // "password":password
+                "Authorization": "Basic "+token,
+                "Url-Id": "Basic "+id,
             },
         });
         var unRepliedResultsJson = await unRepliedResults.json();
@@ -127,11 +136,12 @@
     }
 
     async function getRepliedPost(owner_id){
+        var id = atob(owner_id);
         var repliedResults = await fetch("/display-posts-replied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "owner_id": owner_id,
+                    "Owner-Id": "Basic "+ id,
                 },
         });
         var repliedResultsJson = await repliedResults.json();
