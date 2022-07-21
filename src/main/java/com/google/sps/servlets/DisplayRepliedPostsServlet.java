@@ -36,7 +36,6 @@ public class DisplayRepliedPostsServlet extends HttpServlet {
 
         // Initialize Datastore 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        
 
         Query<Entity> query = Query.newEntityQueryBuilder()
             .setKind("RepliedPost")
@@ -60,7 +59,12 @@ public class DisplayRepliedPostsServlet extends HttpServlet {
             posts.add(onePost);
         }
 
-        // Convert the 'posts' arraylist into json and send as response
+        long idOwnerLong = Long.valueOf(idOwner);
+        Query<Entity> queryName = Query.newGqlQueryBuilder(Query.ResultType.ENTITY,             
+                          "SELECT * FROM User WHERE __key__ = KEY(User, @idOwner")
+                      .setBinding("idOwner", idOwnerLong)
+                      .build();
+
         Gson gson = new Gson();
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(posts));

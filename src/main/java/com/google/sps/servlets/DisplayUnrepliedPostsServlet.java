@@ -55,10 +55,8 @@ public class DisplayUnrepliedPostsServlet extends HttpServlet {
     }
 
     System.out.println("finding:"+idCookie);
-
-    //if verified, construct the response (SECURITY ISSUE! it needs another cookie that is different from url)
-    // if(idUrl == idCookie)
-    if(true){
+    
+    if(idUrl.equals(idCookie)){
         Query<Entity> query =
         Query.newEntityQueryBuilder().setKind("Post")
         .setFilter(
@@ -79,6 +77,7 @@ public class DisplayUnrepliedPostsServlet extends HttpServlet {
             onePost.add(ownerId);
             onePost.add(postId);
             posts.add(onePost);
+            
         }
     }
 
