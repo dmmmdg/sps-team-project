@@ -52,7 +52,7 @@ public class DisplayPostsServlet extends HttpServlet {
             String postContent = entity.getString("content");
             posts.add(postContent);
         }
-
+        
         // Convert the 'posts' arraylist into json and send as response
         Gson gson = new Gson();
         response.setContentType("application/json;");
