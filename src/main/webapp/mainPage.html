@@ -92,11 +92,11 @@
             callback: function(data, pagination) {
                 var dataHtml = document.createElement("div");
 
-                $.each(data, function (index, item) {
+                $.each(data, function (index, current_post) {
                     var unRepliedDiv = document.createElement("div");
                     unRepliedDiv.className = "unRepliedDiv";
                     var message = document.createElement("ul");
-                    message.innerHTML = item[0];
+                    message.innerHTML = current_post[0];
                     message.className = "message";
                     
                     //create response form
@@ -111,17 +111,17 @@
                     var responseOwnerId = document.createElement("input");
                     responseOwnerId.name = "ownerId";
                     responseOwnerId.type = "hidden";
-                    responseOwnerId.value = item[1];
+                    responseOwnerId.value = current_post[1];
 
                     var responsePostId = document.createElement("input");
                     responsePostId.name = "postId";
                     responsePostId.type = "hidden";
-                    responsePostId.value = item[2];
+                    responsePostId.value = current_post[2];
 
                     var originalContent = document.createElement("input");
                     originalContent.name = "originalContent";
                     originalContent.type = "hidden";
-                    originalContent.value = item[0];
+                    originalContent.value = current_post[0];
 
                     var responseSubmit = document.createElement("input");
                     responseSubmit.type = "submit";
