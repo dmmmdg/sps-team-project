@@ -1,78 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<style>
-    body {
-        background-color: #f2f2f2;
-    }
-    form {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px #ccc;
-        padding: 20px;
-        width: 300px;
-        margin: 0 auto;
-        margin-top: 20px;
-    }
-    form input {
-        width : 100%;
-        display: block;
-        margin: 10px 0;
-    }
-    form input[type="submit"] {
-        background-color: #4CAF50;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        width: 100%;
-    }
-    form input[type="submit"]:hover {
-        cursor: pointer;
-    }
 
-    .repliedDiv{
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px #ccc;
-        padding: 20px;
-        width: 300px;
-        margin: 0 auto;
-        margin-top: 20px;
-    }
-</style>
 <body onload="loadData()">
-    <form action="/new-post" method="post">
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    <div id="nameWrapper">
+    
+    
+    </div>
+    <form action="/new-post" method="post" target="dummyFrame" onsubmit="setTimeout(function(){window.location.reload();},10);">
+        Create New Post!
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
-        <input type="submit" value="submit">
+        <input type="submit" value="Submit" className="submitBtn">
     </form>
     <hr>
-    <p>Unreplied Post:</p>
+    <p id="unrepliedstyle">Unreplied Post:</p>
+    <button onclick="myFunction()">Expand/Collapse</button>
     <div id="unRepliedWrapper">
 
     </div>
     <hr>
-    <p>Replied Post:</p>
+    <p id="repliedstyle">Replied Post:</p>
+    <button onclick="myReplyFunction()">Expand/Collapse</button>
     <div id="repliedWrapper">
 
     </div>
 
 <script>
+
     async function getUnrepliedPost(){
-        var unRepliedResults = await fetch("/display-posts-unreplied", {
+        var token;
+        let matchToken = document.cookie.match(new RegExp('(^| )' + "token" + '=([^;]+)'));
+        if(matchToken!=null){
+            token = atob(matchToken[2]);
+        }
+        var url_string = window.location.href; 
+        var url = new URL(url_string);
+        var id = atob(url.searchParams.get("id"));
+        console.log(id);
+
+        var unRepliedResults = await fetch(("/display-posts-unreplied"), {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                //TODO: replace the verification by Google's API
-                // "owner_id": owner_id,
-                // "user_id":user_id,
-                // "password":password
+                "Authorization": "Basic "+token,
+                "Url-Id": "Basic "+id,
             },
         });
         var unRepliedResultsJson = await unRepliedResults.json();
@@ -90,10 +72,13 @@
             var responseForm = document.createElement("form");
             responseForm.action = "/reply-post";
             responseForm.method = "post";
+            responseForm.target = "dummyFrame";
+
             var responseInput = document.createElement("input");
             responseInput.name = "content";
             responseInput.type = "text";
             responseInput.placeholder = "reply";
+
             
             var responseOwnerId = document.createElement("input");
             responseOwnerId.name = "ownerId";
@@ -113,6 +98,9 @@
             var responseSubmit = document.createElement("input");
             responseSubmit.type = "submit";
             responseSubmit.value = "Submit";
+            responseSubmit.className = "submitBtn";
+            responseSubmit.onclick = function(){setTimeout(()=>{window.location.reload();}, 10)};
+
 
 
             responseForm.appendChild(message);
@@ -127,11 +115,12 @@
     }
 
     async function getRepliedPost(owner_id){
+        var id = atob(owner_id);
         var repliedResults = await fetch("/display-posts-replied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "owner_id": owner_id,
+                    "Owner-Id": "Basic "+ id,
                 },
         });
         var repliedResultsJson = await repliedResults.json();
@@ -161,8 +150,7 @@
         //I deleted cookie login here, and it should be replaced by something that could get Google ID. 
         //TODO: provide a valid user id from Google's API
         var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
-
-
+        var url = window.location.href;
         var owner_id = url.substring(url.indexOf("?") + 1);
         owner_id=owner_id.split("=")[1];
         document.getElementById("owner_id").value = owner_id;
@@ -178,9 +166,27 @@
         if(owner_id){
             getRepliedPost(owner_id);
         }
+	
 
     }
 
+    function myFunction() {
+        var x = document.getElementById("unRepliedWrapper");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    } 
+
+    function myReplyFunction() {
+        var x = document.getElementById("repliedWrapper");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
     
 </script>
 </body>
