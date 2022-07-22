@@ -28,7 +28,7 @@ function handleCredentialResponse(response) {
   }
 window.onload = function () {
     google.accounts.id.initialize({
-        client_id: "CLIENT_ID",
+        client_id: "ID",
         callback: handleCredentialResponse
     });
     google.accounts.id.renderButton(
