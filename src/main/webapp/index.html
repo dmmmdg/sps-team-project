@@ -3,47 +3,103 @@
   <head>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <title>Project</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPS Team39</title>
+    <link rel="stylesheet" href="style/style.css">
   </head>
   <body>
-    <div id="login">
-        <div id="buttonDiv"></div> 
-        <p id="fullName"></p>
-        <p id="sub"></p>
-        <p id="given_name"></p>
-        <p id="family_name"></p>
-        <p id="email"></p>
-        <p id="verifiedEmail"></p>
-        <img id="picture" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>SPS Team39</title>
-      <link rel="stylesheet" href="style/style.css">
-  
-  </head>
-  <body>
+
       <div class="mainWrapper">
           <div class="welcomeWrapper">
               <h1>Welcome to SPS Team39's Project!</h1>
+              <div id="desc"><p>This project is an anonymous question submission web app for university students.
+                Once you create an account, you can share your personalized link with anyone to have them ask
+                you anonymous questions. 
+              </p></div>
           </div>
           <div class="signButtonWrapper">
-              <button class="signButton" onclick="goToSignUp()">Login with Google</button> 
-          </div>
-  
+            <div><h2>Sign up + Login</h2></div>
+            <div id="login">
+                <div id="buttonDiv"></div> 
+                <p id="fullName"></p>
+                <p id="sub"></p>
+                <p id="given_name"></p>
+                <p id="family_name"></p>
+                <p id="email"></p>
+                <p id="verifiedEmail"></p>
+                <img id="picture" />
+            </div>
+        </div>
       </div>
     </body>
   
-      <script>
-          function goToSignUp() {
-              window.location.href = "/signup";
-          }
-  
-      </script>
-  
   </body>
+  <script>
+      // Copyright 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+  * Adds the sign in with Google function.
+ */
+async function handleCredentialResponse(response) {
+    const data = jwt_decode(response.credential)
+    console.log(data)
+    var token;
+    var statusCode = 404;
+    const res = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: "ID="+data.sub+"&email="+data.email+"&name="+data.name
+        }).catch(error=>{
+        console.log("Error creating user!");
+        }).then((res)=>{
+            console.log(document.cookie)
+            
+            let matchToken = document.cookie.match(new RegExp('(^| )' + "token" + '=([^;]+)'));
+            if(matchToken!=null){
+                token = matchToken[2];
+            }
+            statusCode = res.status;
+            if(statusCode == 200){
+                window.location.href="mainPage.html?id="+token;
+            }
+        })
+    
+
+
+    
+  }
+window.onload = function () {
+    google.accounts.id.initialize({
+        client_id: "891385536925-sblb9nv3ehfc45p806jkkarnvjivb9he.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" }  // customization attributes
+    );
+    google.accounts.id.prompt(); // also display the One Tap dialog
+}
+
+  </script>
   </html> 
