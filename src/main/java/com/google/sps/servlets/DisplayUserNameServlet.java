@@ -23,8 +23,10 @@ import java.nio.charset.StandardCharsets;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-/** Servlet responsible for displaying posts. */
-@WebServlet("/get-name")
+/* This file is currently unused because of the query through key of datastore API does not work.
+TODO: Find a way to query through the auto-generated key's ID */
+
+@WebServlet("/get-user-name")
 public class DisplayUserNameServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

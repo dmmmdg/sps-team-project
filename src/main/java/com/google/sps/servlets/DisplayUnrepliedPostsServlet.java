@@ -57,12 +57,11 @@ public class DisplayUnrepliedPostsServlet extends HttpServlet {
     System.out.println("finding:"+idCookie);
     
     if(idUrl.equals(idCookie)){
-        Query<Entity> query =
-        Query.newEntityQueryBuilder().setKind("Post")
-        .setFilter(
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("Post")
+            .setFilter(
                 PropertyFilter.eq("user_id", idCookie)
             )
-        .build();
+            .build();
         QueryResults<Entity> results = datastore.run(query);
         System.out.println("result:"+results);
 

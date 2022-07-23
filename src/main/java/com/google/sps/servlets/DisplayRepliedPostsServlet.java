@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 public class DisplayRepliedPostsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String idOwner = request.getHeader("Owner-Id");
+        String idOwner = request.getHeader("ownerId");
         System.out.println("RepliedOwner:"+idOwner);
         if (idOwner != null) {
             String base64CredentialId = idOwner.substring("Basic".length()).trim();

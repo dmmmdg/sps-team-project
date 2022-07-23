@@ -46,13 +46,38 @@
         margin: 0 auto;
         margin-top: 20px;
     }
+
+    #copyWrapper{
+        display:flex;
+        flex-direction:revert;
+    }
+
+    #urlBox{
+        margin-right: 10px;
+        margin-left: auto;
+        font-family: Raleway;
+        font-size: 15px;
+        box-shadow: 3px 3px black !important;
+        width: 20%;
+    }
+
+    #copyBtn{
+        margin-right: 30px;
+        height: 5vh;
+        box-shadow: 3px 3px black;
+        background-color: white;
+        font-family: Raleway;
+        font-size: 15px;
+
+    }
+
 </style>
 
 <body onload="loadData()">
     <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
-    <div id="nameWrapper">
-    
-    
+    <div id="copyWrapper">
+        <input id="urlBox">
+        <button id="copyBtn" onclick="copyUrl()"> Share </button>
     </div>
     <form action="/new-post" method="post" target="dummyFrame" onsubmit="setTimeout(function(){window.location.reload();},10);">
         Create New Post!
@@ -72,6 +97,19 @@
     </div>
 
 <script>
+    document.getElementById("urlBox").value = window.location.href;
+    function copyUrl(){
+        var dummy = document.createElement('input'),
+        text = window.location.href;
+
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        alert('The link is copied!');
+    }
+
 
     async function getUnrepliedPost(){
         var token;
@@ -155,7 +193,7 @@
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Owner-Id": "Basic "+ id,
+                    "ownerId": "Basic "+ id,
                 },
         });
         var repliedResultsJson = await repliedResults.json();

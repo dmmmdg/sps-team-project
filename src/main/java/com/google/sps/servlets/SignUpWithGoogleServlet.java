@@ -84,8 +84,9 @@ public class SignUpWithGoogleServlet extends HttpServlet {
     Cookie GoogleToken = new Cookie("Google-token", GoogleEncodedSecond);
     response.addCookie(token);
     response.addCookie(GoogleToken);
+    response.setHeader("User-Name",nameValue);
     response.setHeader("Access-Control-Allow-Origin", "*");
     response.setStatus(200);
-    response.sendRedirect("/mainPage.html?id="+idValue);
+
     }
 }
