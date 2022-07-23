@@ -1,6 +1,6 @@
 body {
-    position: relative;
-    background: linear-gradient(180deg, #6E60D0 0%, rgba(86, 128, 233, 0.76) 100%);
+    background: url(images/mainbackground.jpg);
+    background-size: cover;
   }
   form input {
     width : 100%;
@@ -35,7 +35,6 @@ body {
     background-color: #84CEEB;
     border: none;
     border-radius: 15px;
-    color: #fff;
     padding: 10px;
     width: 25%;
     margin: 0 auto;
@@ -67,4 +66,16 @@ body {
     font-family: 'Inter', sans-serif;
     color: white;
     font-weight: bold;
+  }
+  
+  #unrepliedbtn {
+    background-color: white;
+    border-radius: 5px;
+    color: black;
+  }
+  
+  #repliedbtn {
+    background-color: white;
+    border-radius: 5px;
+    color: black;
   }
