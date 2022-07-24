@@ -9,47 +9,18 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
     <title>Main Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<style>
-    body {
-        background-color: #f2f2f2;
-    }
-    form {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px #ccc;
-        padding: 20px;
-        width: 300px;
-        margin: 0 auto;
-        margin-top: 20px;
-    }
-    form input {
-        width : 100%;
-        display: block;
-        margin: 10px 0;
-    }
-    form input[type="submit"] {
-        background-color: #4CAF50;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        width: 100%;
-    }
-    form input[type="submit"]:hover {
-        cursor: pointer;
-    }
 
-    .repliedDiv{
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px #ccc;
-        padding: 20px;
-        width: 300px;
-        margin: 0 auto;
-        margin-top: 20px;
-    }
+
+<body onload="loadData()">
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    <div id="nameWrapper">
+    
+    
 
     #copyWrapper{
         display:flex;
@@ -87,21 +58,29 @@
         Create New Post!
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
-        <input type="submit" value="submit" className="submitBtn">
+
+        <input type="submit" value="Submit" className="submitBtn">
     </form>
     <hr>
-    <p>Unreplied Post:</p>
+    <p id="unrepliedstyle">Unreplied Post:
+        <button onclick="myFunction()" id="unrepliedbtn"> Expand/Collapse +</button>
+    </p>
+
     <div id="unRepliedWrapper">
     </div>
     <div id="unRepliedWrapperPagination">
     </div>
     <hr>
-    <p>Replied Post:</p>
+    <p id="repliedstyle">Replied Post:
+        <button onclick="myReplyFunction()" id="repliedbtn">Expand/Collapse +</button>
+    </p>
+
     <div id="repliedWrapper">
 
     </div>
 
 <script>
+
     document.getElementById("urlBox").value = window.location.href;
     function copyUrl(){
         var dummy = document.createElement('input'),
@@ -114,6 +93,7 @@
         document.body.removeChild(dummy);
         alert('The link is copied!');
     }
+
 
 
     async function getUnrepliedPost(){
@@ -139,7 +119,6 @@
         console.log(unRepliedResultsJson);
         var unRepliedWrapper = document.getElementById("unRepliedWrapper");
         unRepliedWrapper.innerHTML = "";
-
 
         $('#unRepliedWrapperPagination').pagination({
             dataSource: unRepliedResultsJson,
@@ -204,6 +183,7 @@
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+
                     "ownerId": "Basic "+ id,
                 },
         });
@@ -256,6 +236,23 @@
 
     }
 
+    function myFunction() {
+        var x = document.getElementById("unRepliedWrapper");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    } 
+
+    function myReplyFunction() {
+        var x = document.getElementById("repliedWrapper");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
     
 </script>
 </body>
