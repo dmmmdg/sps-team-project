@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -49,12 +50,44 @@
         margin: 0 auto;
         margin-top: 20px;
     }
+
+    #copyWrapper{
+        display:flex;
+        flex-direction:revert;
+    }
+
+    #urlBox{
+        margin-right: 10px;
+        margin-left: auto;
+        font-family: Raleway;
+        font-size: 15px;
+        box-shadow: 3px 3px black !important;
+        width: 20%;
+    }
+
+    #copyBtn{
+        margin-right: 30px;
+        height: 5vh;
+        box-shadow: 3px 3px black;
+        background-color: white;
+        font-family: Raleway;
+        font-size: 15px;
+
+    }
+
 </style>
+
 <body onload="loadData()">
-    <form action="/new-post" method="post">
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    <div id="copyWrapper">
+        <input id="urlBox">
+        <button id="copyBtn" onclick="copyUrl()"> Share </button>
+    </div>
+    <form action="/new-post" method="post" target="dummyFrame" onsubmit="setTimeout(function(){window.location.reload();},10);">
+        Create New Post!
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
-        <input type="submit" value="submit">
+        <input type="submit" value="submit" className="submitBtn">
     </form>
     <hr>
     <p>Unreplied Post:</p>
@@ -69,15 +102,37 @@
     </div>
 
 <script>
+    document.getElementById("urlBox").value = window.location.href;
+    function copyUrl(){
+        var dummy = document.createElement('input'),
+        text = window.location.href;
+
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        alert('The link is copied!');
+    }
+
+
     async function getUnrepliedPost(){
-        var unRepliedResults = await fetch("/display-posts-unreplied", {
+        var token;
+        let matchToken = document.cookie.match(new RegExp('(^| )' + "token" + '=([^;]+)'));
+        if(matchToken!=null){
+            token = atob(matchToken[2]);
+        }
+        var url_string = window.location.href; 
+        var url = new URL(url_string);
+        var id = atob(url.searchParams.get("id"));
+        console.log(id);
+
+        var unRepliedResults = await fetch(("/display-posts-unreplied"), {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                //TODO: replace the verification by Google's API
-                // "owner_id": owner_id,
-                // "user_id":user_id,
-                // "password":password
+                "Authorization": "Basic "+token,
+                "Url-Id": "Basic "+id,
             },
         });
         var unRepliedResultsJson = await unRepliedResults.json();
@@ -144,11 +199,12 @@
     }
 
     async function getRepliedPost(owner_id){
+        var id = atob(owner_id);
         var repliedResults = await fetch("/display-posts-replied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "owner_id": owner_id,
+                    "ownerId": "Basic "+ id,
                 },
         });
         var repliedResultsJson = await repliedResults.json();
@@ -179,7 +235,8 @@
         //TODO: provide a valid user id from Google's API
         var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
 
-        var url = "https://summer22-sps-39.appspot.com/";
+        var url = window.location.href;
+
         var owner_id = url.substring(url.indexOf("?") + 1);
         owner_id=owner_id.split("=")[1];
         document.getElementById("owner_id").value = owner_id;
@@ -195,6 +252,7 @@
         if(owner_id){
             getRepliedPost(owner_id);
         }
+	
 
     }
 
