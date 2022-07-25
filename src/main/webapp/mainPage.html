@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -8,83 +9,116 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
     <title>Main Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<style>
-    body {
-        background-color: #f2f2f2;
-    }
-    form {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px #ccc;
-        padding: 20px;
-        width: 300px;
-        margin: 0 auto;
-        margin-top: 20px;
-    }
-    form input {
-        width : 100%;
-        display: block;
-        margin: 10px 0;
-    }
-    form input[type="submit"] {
-        background-color: #4CAF50;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        width: 100%;
-    }
-    form input[type="submit"]:hover {
-        cursor: pointer;
+
+
+<body onload="loadData()">
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    <div id="nameWrapper">
+    
+    
+
+    #copyWrapper{
+        display:flex;
+        flex-direction:revert;
     }
 
-    .repliedDiv{
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px #ccc;
-        padding: 20px;
-        width: 300px;
-        margin: 0 auto;
-        margin-top: 20px;
+    #urlBox{
+        margin-right: 10px;
+        margin-left: auto;
+        font-family: Raleway;
+        font-size: 15px;
+        box-shadow: 3px 3px black !important;
+        width: 20%;
     }
+
+    #copyBtn{
+        margin-right: 30px;
+        height: 5vh;
+        box-shadow: 3px 3px black;
+        background-color: white;
+        font-family: Raleway;
+        font-size: 15px;
+
+    }
+
 </style>
+
 <body onload="loadData()">
-    <form action="/new-post" method="post">
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    <div id="copyWrapper">
+        <input id="urlBox">
+        <button id="copyBtn" onclick="copyUrl()"> Share </button>
+    </div>
+    <form action="/new-post" method="post" target="dummyFrame" onsubmit="setTimeout(function(){window.location.reload();},10);">
+        Create New Post!
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
-        <input type="submit" value="submit">
+
+        <input type="submit" value="Submit" className="submitBtn">
     </form>
     <hr>
-    <p>Unreplied Post:</p>
+    <p id="unrepliedstyle">Unreplied Post:
+        <button onclick="myFunction()" id="unrepliedbtn"> Expand/Collapse +</button>
+    </p>
+
     <div id="unRepliedWrapper">
     </div>
     <div id="unRepliedWrapperPagination">
     </div>
     <hr>
-    <p>Replied Post:</p>
+    <p id="repliedstyle">Replied Post:
+        <button onclick="myReplyFunction()" id="repliedbtn">Expand/Collapse +</button>
+    </p>
+
     <div id="repliedWrapper">
 
     </div>
 
 <script>
+
+    document.getElementById("urlBox").value = window.location.href;
+    function copyUrl(){
+        var dummy = document.createElement('input'),
+        text = window.location.href;
+
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        alert('The link is copied!');
+    }
+
+
+
     async function getUnrepliedPost(){
-        var unRepliedResults = await fetch("/display-posts-unreplied", {
+        var token;
+        let matchToken = document.cookie.match(new RegExp('(^| )' + "token" + '=([^;]+)'));
+        if(matchToken!=null){
+            token = atob(matchToken[2]);
+        }
+        var url_string = window.location.href; 
+        var url = new URL(url_string);
+        var id = atob(url.searchParams.get("id"));
+        console.log(id);
+
+        var unRepliedResults = await fetch(("/display-posts-unreplied"), {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                //TODO: replace the verification by Google's API
-                // "owner_id": owner_id,
-                // "user_id":user_id,
-                // "password":password
+                "Authorization": "Basic "+token,
+                "Url-Id": "Basic "+id,
             },
         });
         var unRepliedResultsJson = await unRepliedResults.json();
         console.log(unRepliedResultsJson);
         var unRepliedWrapper = document.getElementById("unRepliedWrapper");
         unRepliedWrapper.innerHTML = "";
-
 
         $('#unRepliedWrapperPagination').pagination({
             dataSource: unRepliedResultsJson,
@@ -144,11 +178,13 @@
     }
 
     async function getRepliedPost(owner_id){
+        var id = atob(owner_id);
         var repliedResults = await fetch("/display-posts-replied", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "owner_id": owner_id,
+
+                    "ownerId": "Basic "+ id,
                 },
         });
         var repliedResultsJson = await repliedResults.json();
@@ -179,7 +215,8 @@
         //TODO: provide a valid user id from Google's API
         var user_id = "IT SHOULD BE REPLACED BY GOOGLE's ID "
 
-        var url = "https://summer22-sps-39.appspot.com/";
+        var url = window.location.href;
+
         var owner_id = url.substring(url.indexOf("?") + 1);
         owner_id=owner_id.split("=")[1];
         document.getElementById("owner_id").value = owner_id;
@@ -195,9 +232,27 @@
         if(owner_id){
             getRepliedPost(owner_id);
         }
+	
 
     }
 
+    function myFunction() {
+        var x = document.getElementById("unRepliedWrapper");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    } 
+
+    function myReplyFunction() {
+        var x = document.getElementById("repliedWrapper");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
     
 </script>
 </body>

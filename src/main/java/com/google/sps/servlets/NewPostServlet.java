@@ -1,5 +1,5 @@
 package com.google.sps.servlets;
-
+import java.util.Base64;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -21,6 +21,11 @@ public class NewPostServlet extends HttpServlet {
     // Get the value entered in the form.
     String userId = Jsoup.clean(request.getParameter("userId"), Whitelist.none());
     String content = Jsoup.clean(request.getParameter("content"), Whitelist.none());
+    byte[] decodedFirst = Base64.getDecoder().decode(userId);
+    String decodedStringFirst = new String(decodedFirst);
+    byte[] decodedSecond = Base64.getDecoder().decode(decodedStringFirst);
+    userId = new String(decodedSecond);
+
 
     // Print the value so you can see it in the server logs.
     System.out.println("New Id: " + userId);
