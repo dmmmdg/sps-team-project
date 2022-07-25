@@ -54,7 +54,7 @@
         <input id="urlBox">
         <button id="copyBtn" onclick="copyUrl()"> Share </button>
     </div>
-    <form action="/new-post" method="post" target="dummyFrame" onsubmit="setTimeout(function(){window.location.reload();},10);">
+    <form action="/new-post" method="post" target="dummyFrame" onsubmit="setTimeout(function(){window.location.reload();},300);">
         Create New Post!
         <input name = "content">
         <input name = "userId" style="display:none" id="owner_id">
@@ -68,7 +68,7 @@
 
     <div id="unRepliedWrapper">
     </div>
-    <div id="unRepliedWrapperPagination">
+    <div id="unRepliedWrapperPagination" style="display: flex; justify-content: center;">
     </div>
     <hr>
     <p id="repliedstyle">Replied Post:
@@ -160,6 +160,9 @@
                     var responseSubmit = document.createElement("input");
                     responseSubmit.type = "submit";
                     responseSubmit.value = "Submit";
+                    responseSubmit.onclick = function(){setTimeout(()=>{window.location.reload();}, 100)};
+
+
 
 
                     responseForm.appendChild(message);
