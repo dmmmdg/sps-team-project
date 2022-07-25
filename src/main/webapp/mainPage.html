@@ -6,47 +6,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
     <title>Main Page</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<style>
 
-
-<body onload="loadData()">
-    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
-    <div id="nameWrapper">
-    
-    
-
-    #copyWrapper{
-        display:flex;
-        flex-direction:revert;
+    *{
+        font-family: Raleway !important;
+        transition:0.2s all;
     }
+ hr{
+     margin:30px;
+ }
+ body {
+    background: url(images/mainbackground.jpg);
+    background-size: cover;
+  }
+  form input {
+    width : 100%;
+    display: block;
+    margin: 10px 0;
+  }
+  
+  .repliedDiv{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #ccc;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  
+  form {
+    background: #D9D9D9;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px #ccc;
+    border-radius: 20px;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 90px;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  form input[type="submit"] {
+    background-color: #84CEEB;
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    width: 25%;
+    margin: 0 auto;
+    color: black;
+    font-weight: bold;
+  }
+  
+  form input[type="submit"]:hover {
+    cursor: pointer;
+  }
+  
+  #unRepliedWrapper {
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  #repliedWrapper {
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  #unrepliedstyle {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    font-weight: bold;
+  }
+  
+  #repliedstyle {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    font-weight: bold;
+  }
+  
+  #unrepliedbtn {
+    background-color: white;
+    border-radius: 5px;
+    color: black;
+  }
+  
+  #repliedbtn {
+    background-color: white;
+    border-radius: 5px;
+    color: black;
+  }
 
-    #urlBox{
-        margin-right: 10px;
-        margin-left: auto;
-        font-family: Raleway;
-        font-size: 15px;
-        box-shadow: 3px 3px black !important;
-        width: 20%;
-    }
 
-    #copyBtn{
-        margin-right: 30px;
-        height: 5vh;
-        box-shadow: 3px 3px black;
-        background-color: white;
-        font-family: Raleway;
-        font-size: 15px;
+#copyWrapper{
+    display:flex;
+    flex-direction:revert;
+}
 
-    }
+#urlBox{
+    margin-right: 10px;
+    margin-left: auto;
+    font-family: Raleway;
+    font-size: 15px;
+    box-shadow: 3px 3px black !important;
+    width: 20%;
+}
+
+#copyBtn{
+    margin-right: 30px;
+    height: 5vh;
+    box-shadow: 3px 3px black;
+    background-color: white;
+    font-family: Raleway;
+    font-size: 15px;
+
+}
+
 
 </style>
+
 
 <body onload="loadData()">
     <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
