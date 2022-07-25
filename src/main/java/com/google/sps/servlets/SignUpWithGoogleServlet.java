@@ -82,9 +82,11 @@ public class SignUpWithGoogleServlet extends HttpServlet {
     final byte[] GoogleAuthBytesSecond = GoogleEncodedFirst.getBytes(StandardCharsets.UTF_8);
     String GoogleEncodedSecond = Base64.getEncoder().encodeToString(GoogleAuthBytesSecond);
     Cookie GoogleToken = new Cookie("Google-token", GoogleEncodedSecond);
+
+    Cookie name = new Cookie("username",nameValue);
+    response.addCookie(name);
     response.addCookie(token);
     response.addCookie(GoogleToken);
-    response.setHeader("User-Name",nameValue);
     response.setHeader("Access-Control-Allow-Origin", "*");
     response.setStatus(200);
 
