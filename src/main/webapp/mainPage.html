@@ -15,10 +15,30 @@
 </head>
 <style>
 
-    *{
+
+<body onload="loadData()">
+    <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    <div id="nameWrapper">
+    
+    
+<style>
+   *{
         font-family: Raleway !important;
         transition:0.2s all;
     }
+  #copyWrapper{
+      display:flex;
+      flex-direction:revert;
+  }
+
+  #urlBox{
+      margin-right: 10px;
+      margin-left: auto;
+      font-family: Raleway;
+      font-size: 15px;
+      box-shadow: 3px 3px black !important;
+      width: 20%;
+  }
  hr{
      margin:30px;
  }
